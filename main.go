@@ -39,28 +39,17 @@ var targets = []struct{ os, arch string }{
 	{"windows", "amd64"},
 }
 
-const relver = "v1.5.0"
+const relver = "v0.2.1"
 
 const ldflags = `-buildid= ` +
-	`-X github.com/decred/dcrd/internal/version.BuildMetadata=release ` +
-	`-X github.com/decred/dcrd/internal/version.PreRelease= ` +
-	`-X github.com/decred/dcrwallet/version.BuildMetadata=release ` +
-	`-X github.com/decred/dcrwallet/version.PreRelease= ` +
 	`-X github.com/decred/dcrlnd/build.BuildMetadata=release ` +
-	`-X github.com/decred/dcrlnd/build.PreRelease= ` +
-	`-X github.com/decred/politeia/util/version.BuildMetadata=release ` +
-	`-X github.com/decred/politeia/util/version.PreRelease=`
+	`-X github.com/decred/dcrlnd/build.PreRelease= `
 
 const tags = "safe,netgo"
 
 var tools = []struct{ tool, builddir string }{
-	{"decred.org/dcrwallet", "./dcrwallet"},
-	{"github.com/decred/dcrd", "./dcrd"},
-	{"github.com/decred/dcrd/cmd/dcrctl", "./dcrd"},
-	{"github.com/decred/dcrd/cmd/promptsecret", "./dcrd"},
 	{"github.com/decred/dcrlnd/cmd/dcrlnd", "./dcrlnd"},
 	{"github.com/decred/dcrlnd/cmd/dcrlncli", "./dcrlnd"},
-	{"github.com/decred/politeia/politeiawww/cmd/politeiavoter", "./politeia"},
 }
 
 var assets = []struct {
@@ -70,29 +59,9 @@ var assets = []struct {
 	contents []byte
 }{
 	{
-		builddir: "./dcrwallet",
-		name:     "sample-dcrwallet.conf",
-		goargs:   []string{"run", "readasset.go", "../sample-dcrwallet.conf"},
-	},
-	{
-		builddir: "./dcrd",
-		name:     "sample-dcrd.conf",
-		goargs:   []string{"run", "readasset.go", "sample-dcrd.conf"},
-	},
-	{
-		builddir: "./dcrd",
-		name:     "sample-dcrctl.conf",
-		goargs:   []string{"run", "readasset.go", "sample-dcrctl.conf"},
-	},
-	{
 		builddir: "./dcrlnd",
 		name:     "sample-dcrlnd.conf",
 		goargs:   []string{"run", "readasset.go", "../sample-dcrlnd.conf"},
-	},
-	{
-		builddir: "./politeia",
-		name:     "sample-politeiavoter.conf",
-		goargs:   []string{"run", "readasset.go", "sample-politeiavoter.conf"},
 	},
 }
 
@@ -193,7 +162,7 @@ func archive(goos, arch string, m *manifest) {
 		archiveZip(goos, arch, m)
 		return
 	}
-	tarPath := fmt.Sprintf("decred-%s-%s-%s", goos, arch, relver)
+	tarPath := fmt.Sprintf("dcrlnd-%s-%s-%s", goos, arch, relver)
 	tarFile, err := os.Create(fmt.Sprintf("archive/%s.tar", tarPath))
 	if err != nil {
 		log.Fatal(err)
@@ -284,7 +253,7 @@ func archive(goos, arch string, m *manifest) {
 }
 
 func archiveZip(goos, arch string, m *manifest) {
-	zipPath := fmt.Sprintf("decred-%s-%s-%s", goos, arch, relver)
+	zipPath := fmt.Sprintf("dcrlnd-%s-%s-%s", goos, arch, relver)
 	zipFile, err := os.Create(fmt.Sprintf("archive/%s.zip", zipPath))
 	defer zipFile.Close()
 	if err != nil {
@@ -334,7 +303,7 @@ func archiveZip(goos, arch string, m *manifest) {
 }
 
 func writeManifest(m manifest) {
-	fi, err := os.Create(fmt.Sprintf("archive/decred-%s-manifest.txt", relver))
+	fi, err := os.Create(fmt.Sprintf("archive/dcrlnd-%s-manifest.txt", relver))
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,5 +1,7 @@
 This release tool cross-compiles reproducible executables and release archives
-(.tar.gz or .zip depending on platform) for Decred releases.
+(.tar.gz or .zip depending on platform) for individual dcrlnd releases.
+
+This tool was adapted from https://github.com/jrick/release
 
 Usage:
 
